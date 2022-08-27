@@ -1,12 +1,12 @@
 {
   "name": "module-13-challenge-orm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ORM E-commerce Back End",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-     "seed": "node seeds/index.js"
+    "seed": "node seeds/index.js"
   },
   "repository": {
     "type": "git",
