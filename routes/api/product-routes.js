@@ -7,7 +7,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 router.get('/', (req, res) => {
   // find all products
   Product.findAll({
-    attributes: ['id', 'product_name', 'price', 'strock', 'category_id'],
+    attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
     // be sure to include its associated Category and Tag data
     include: [
       {
@@ -16,6 +16,7 @@ router.get('/', (req, res) => {
       },
       {
         model: Tag,
+        as: "product_tags",
         attributes: ['id', 'tag_name'],
       },
     ],
@@ -34,7 +35,7 @@ router.get('/:id', (req, res) => {
     where: {
       id: req.params.id,
     },
-    attributes: ['id', 'product_name', 'price', 'strock', 'category_id'],
+    attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
     // be sure to include its associated Category and Tag data
     include: [
       {
@@ -43,6 +44,7 @@ router.get('/:id', (req, res) => {
       },
       {
         model: Tag,
+        as: "product_tags",
         attributes: ['id', 'tag_name'],
       },
     ],
@@ -72,8 +74,8 @@ router.post('/', (req, res) => {
   */
   Product.create(req.body)
     .then((product) => {
-      // if there's product tags, we need to create pairings to bulk create in the ProductTag model
-      if (req.body.tagIds.length) {
+      // if there are product tags, we need to create pairings to bulk create in the ProductTag model
+      if (req.body.tagIds) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
           return {
             product_id: product.id,

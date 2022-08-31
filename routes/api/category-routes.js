@@ -28,7 +28,16 @@ router.get('/:id', (req, res) => {
     where: {
       id: req.params.id,
     },
-    attributes: ['id', 'category_id'],
+    attributes: [
+      'id',
+      'category_name',
+      [
+        sequelize.literal(
+          '(SELECT COUNT(*) FROM product WHERE product.id = category.id)'
+        ),
+        'test',
+      ],
+    ],
     // be sure to include its associated Products
     include: [
       {
